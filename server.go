@@ -9,5 +9,9 @@ func main() {
 		return "Hello World"
 	})
 
+	app.Get("/hello/:name", func(params martini.Params) string {
+		return "Hello " + params["name"]
+	})
+
 	app.Run()
 }
