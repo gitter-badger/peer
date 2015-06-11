@@ -10,9 +10,13 @@
   },
   "homepage": "https://github.com/PhotoTresor/peer",
   "devDependencies": {
+    "es6-promise": "^2.3.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-browserify": "^0.5.1",
-    "react": "^0.13.3"
+    "isomorphic-fetch": "^2.1.0",
+    "material-ui": "^0.9.0",
+    "react": "^0.13.3",
+    "react-tap-event-plugin": "^0.1.7"
   }
 }
