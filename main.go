@@ -7,6 +7,10 @@ import (
 	"github.com/martini-contrib/gzip"
 	"github.com/martini-contrib/render"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/martini-contrib/binding"
+	"os"
+	"io"
+	"log"
 )
 
 var (
@@ -27,7 +31,27 @@ func main() {
 		render.JSON(200, photos)
 	})
 
-	app.Post("/photos", func(render render.Render) {
+	app.Post("/photos", binding.MultipartForm(models.PhotoUpload{}), func(render render.Render, upload models.PhotoUpload) {
+		file, err := upload.File.Open()
+		defer file.Close()
+
+		if err != nil {
+			log.Panic(err)
+			render.Error(500)
+			return
+		}
+
+		dst, err := os.Create("./photos/" + upload.File.Filename)
+		defer dst.Close()
+
+		if err != nil {
+			log.Fatal(err)
+			render.Error(500)
+			return
+		}
+
+		io.Copy(dst, file)
+
 		render.Status(201)
 	})
 
@@ -56,10 +80,4 @@ func initDB() {
 	db.LogMode(true)
 
 	db.CreateTable(&models.Photo{})
-}
-
-func check(err error) {
-	if err != nil {
-		panic(err)
-	}
 }
