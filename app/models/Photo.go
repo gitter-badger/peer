@@ -1,19 +1,21 @@
 package models
 import (
-	"github.com/jinzhu/gorm"
 	"time"
 	"mime/multipart"
 )
 
 type Photo struct {
-	gorm.Model
-	FileName     string
-	FileSize     int
-	FileMimeType string
-	FileHash     string
-	Width        int
-	Height       int
-	CapturedAt   time.Time
+	ID           uint `gorm:"primary_key" json:"id"`
+	FileName     string `json:"file_name"`
+	FileSize     int `json:"file_size"`
+	FileMimeType string `json:"file_mime_type"`
+	FileHash     string `json:"file_hash"`
+	Width        int `json:"width"`
+	Height       int `json:"height"`
+	CapturedAt   time.Time `json:"captured_at"`
+	CreatedAt    time.Time `json:"created_at"`
+	UpdatedAt    time.Time `json:"updated_at"`
+	DeletedAt    *time.Time `json:"deleted_at"`
 }
 
 type PhotoUpload struct {

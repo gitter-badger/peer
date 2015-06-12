@@ -54,7 +54,7 @@ class App extends React.Component {
     render() {
         var renderPhoto = function (photo, index) {
             return (
-                <li key={index}>{photo.ID} - {photo.FileName}</li>
+                <li key={index}>{photo.id} - {photo.file_name}</li>
             )
         };
 
