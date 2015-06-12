@@ -38,7 +38,6 @@ func main() {
 		if err != nil {
 			log.Panic(err)
 			render.Error(500)
-			return
 		}
 
 		dst, err := os.Create("./photos/" + upload.File.Filename)
@@ -47,10 +46,19 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 			render.Error(500)
-			return
 		}
 
 		io.Copy(dst, file)
+
+		imageFile, _ := os.Open("./photos/" + upload.File.Filename)
+
+		photo := new(models.Photo)
+		imageFileStat, _ := imageFile.Stat()
+		photo.FileName = imageFileStat.Name()
+		photo.FileSize = imageFileStat.Size()
+
+		db.NewRecord(photo)
+		db.Create(&photo)
 
 		render.Status(201)
 	})
