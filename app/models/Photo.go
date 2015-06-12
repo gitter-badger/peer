@@ -7,7 +7,7 @@ import (
 type Photo struct {
 	ID           uint `gorm:"primary_key" json:"id"`
 	FileName     string `json:"file_name"`
-	FileSize     int `json:"file_size"`
+	FileSize     int64 `json:"file_size"`
 	FileMimeType string `json:"file_mime_type"`
 	FileHash     string `json:"file_hash"`
 	Width        int `json:"width"`
