@@ -75,6 +75,19 @@ func main() {
 		render.JSON(200, photo)
 	})
 
+	app.Get("/photos/:id/download", func(params martini.Params, render render.Render) {
+		photo := models.Photo{}
+
+		db.First(&photo, params["id"])
+
+		photoData, err := ioutil.ReadFile(PHOTOS_PATH + photo.FileName)
+		if err != nil {
+			render.Error(500)
+		}
+
+		render.Data(200, photoData)
+	})
+
 	app.Run()
 }
 
