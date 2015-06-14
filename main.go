@@ -11,7 +11,10 @@ import (
 	"os"
 	"io"
 	"log"
+	"io/ioutil"
 )
+
+const PHOTOS_PATH string = "./photos/"
 
 var (
 	db gorm.DB
@@ -40,7 +43,8 @@ func main() {
 			render.Error(500)
 		}
 
-		dst, err := os.Create("./photos/" + upload.File.Filename)
+		os.Mkdir(PHOTOS_PATH, os.FileMode(uint(0775)))
+		dst, err := os.Create(PHOTOS_PATH + upload.File.Filename)
 		defer dst.Close()
 
 		if err != nil {
@@ -50,7 +54,7 @@ func main() {
 
 		io.Copy(dst, file)
 
-		imageFile, _ := os.Open("./photos/" + upload.File.Filename)
+		imageFile, _ := os.Open(PHOTOS_PATH + upload.File.Filename)
 
 		photo := new(models.Photo)
 		imageFileStat, _ := imageFile.Stat()
