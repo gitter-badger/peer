@@ -1,5 +1,6 @@
 import React from 'react'
-import {AppBar} from 'material-ui'
+import {AppBar, FloatingActionButton} from 'material-ui'
+import Dropzone from 'react-dropzone'
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -52,18 +53,49 @@ class App extends React.Component {
     }
 
     render() {
-        var renderPhoto = function (photo, index) {
+        var renderGridPhoto = function (photo, index) {
             return (
-                <li key={index}>{photo.id} - {photo.file_name}</li>
+                <GridPhoto photo={photo}/>
             )
         };
 
         return (
             <div>
-                <AppBar
-                    title="Photos"
-                    showMenuIconButton={false}/>
-                <ul>{this.state.photos.map(renderPhoto)}</ul>
+                <Dropzone onDrop={this.handleFileDrop}>
+                    <AppBar
+                        title="Photos"
+                        showMenuIconButton={false}/>
+
+                    <div style={{margin: '24px 80px'}}>
+                        {this.state.photos.map(renderGridPhoto)}
+                    </div>
+                    <FloatingActionButton
+                        iconClassName="muidocs-icon-content-add"
+                        style={{position: 'absolute', bottom: '20px', right: '20px'}}>
+                        <i className="material-icons" style={{color: 'white'}}>cloud_upload</i>
+                    </FloatingActionButton>
+                </Dropzone>
+            </div>
+        )
+    }
+
+    handleFileDrop(files) {
+        console.log(files);
+    }
+}
+
+class GridPhoto extends React.Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        var downloadPath = "/photos/" + this.props.photo.id + "/download";
+        return (
+            <div key={this.props.photo.id}
+                 style={{display: 'inline-block', marginRight: '10px'}}>
+                <img src={downloadPath} alt={this.props.photo.file_name} height="220"/>
             </div>
         )
     }
