@@ -1,6 +1,5 @@
 import React from 'react'
 import {AppBar, FloatingActionButton} from 'material-ui'
-import Dropzone from 'react-dropzone'
 
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -61,20 +60,18 @@ class App extends React.Component {
 
         return (
             <div>
-                <Dropzone onDrop={this.handleFileDrop}>
-                    <AppBar
-                        title="Photos"
-                        showMenuIconButton={false}/>
+                <AppBar
+                    title="Photos"
+                    showMenuIconButton={false}/>
 
-                    <div style={{margin: '24px 80px'}}>
-                        {this.state.photos.map(renderGridPhoto)}
-                    </div>
-                    <FloatingActionButton
-                        iconClassName="muidocs-icon-content-add"
-                        style={{position: 'absolute', bottom: '20px', right: '20px'}}>
-                        <i className="material-icons" style={{color: 'white'}}>cloud_upload</i>
-                    </FloatingActionButton>
-                </Dropzone>
+                <div style={{margin: '24px 80px'}}>
+                    {this.state.photos.map(renderGridPhoto)}
+                </div>
+                <FloatingActionButton
+                    iconClassName="muidocs-icon-content-add"
+                    style={{position: 'absolute', bottom: '20px', right: '20px'}}>
+                    <i className="material-icons" style={{color: 'white'}}>cloud_upload</i>
+                </FloatingActionButton>
             </div>
         )
     }
