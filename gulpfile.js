@@ -3,6 +3,9 @@ var babel = require("gulp-babel");
 var browserify = require('gulp-browserify');
 
 gulp.task('default', ['js'], function () {
+});
+
+gulp.task('watch', ['js'], function () {
     return gulp.watch('app/assets/js/**', ['js']);
 });
 
