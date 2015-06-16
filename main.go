@@ -97,6 +97,11 @@ func main() {
 			render.Status(404)
 		}
 
+		err := os.Remove(PHOTOS_PATH + photo.FileName)
+		if(err != nil) {
+			render.Error(500)
+		}
+
 		db.Delete(&photo)
 		render.Status(200)
 	})
