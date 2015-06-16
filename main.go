@@ -11,7 +11,8 @@ import (
 	"os"
 	"io"
 	"log"
-	"io/ioutil"
+	"image/jpeg"
+	"github.com/nfnt/resize"
 )
 
 const PHOTOS_PATH string = "./photos/"
@@ -80,12 +81,19 @@ func main() {
 
 		db.First(&photo, params["id"])
 
-		photoData, err := ioutil.ReadFile(PHOTOS_PATH + photo.FileName)
+		log.Println(params["height"])
+
+		photoFile, err := os.Open(PHOTOS_PATH + photo.FileName)
+		defer photoFile.Close()
 		if err != nil {
 			render.Error(500)
 		}
 
-		render.Data(200, photoData)
+		photoJpeg, _ := jpeg.Decode(photoFile)
+
+		photoResized := resize.Resize(0, 220, photoJpeg, resize.Bilinear)
+
+		render.Data(200, photoFile)
 	})
 
 	app.Run()
