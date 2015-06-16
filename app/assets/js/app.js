@@ -4,6 +4,9 @@ import {AppBar, FloatingActionButton} from 'material-ui'
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
+
 var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
 
