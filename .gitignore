@@ -1,6 +1,7 @@
 /.idea
 /main
 /node_modules
+/photos
 /phototresor.db
 /public/*.js
 
