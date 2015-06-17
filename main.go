@@ -89,6 +89,24 @@ func main() {
 		render.Data(200, photoData)
 	})
 
+	app.Delete("/photos/:id", func(params martini.Params, render render.Render) {
+		photo := models.Photo{}
+
+		db.First(&photo, params["id"])
+
+		if (photo.ID == 0) {
+			render.Status(404)
+		}
+
+		err := os.Remove(PHOTOS_PATH + photo.FileName)
+		if(err != nil) {
+			render.Error(500)
+		}
+
+		db.Delete(&photo)
+		render.Status(200)
+	})
+
 	app.Run()
 }
 
