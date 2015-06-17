@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/PhotoTresor/peer/app/models"
+	"github.com/PhotoPeer/peer/app/models"
 	"github.com/jinzhu/gorm"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/gzip"
