@@ -13,6 +13,7 @@ import (
 	"log"
 	"image/jpeg"
 	"github.com/nfnt/resize"
+	"net/http"
 )
 
 const PHOTOS_PATH string = "./photos/"
@@ -76,7 +77,7 @@ func main() {
 		render.JSON(200, photo)
 	})
 
-	app.Get("/photos/:id/download", func(params martini.Params, render render.Render) {
+	app.Get("/photos/:id/download", func(params martini.Params, response http.ResponseWriter) {
 		photo := models.Photo{}
 
 		db.First(&photo, params["id"])
@@ -86,14 +87,14 @@ func main() {
 		photoFile, err := os.Open(PHOTOS_PATH + photo.FileName)
 		defer photoFile.Close()
 		if err != nil {
-			render.Error(500)
 		}
 
 		photoJpeg, _ := jpeg.Decode(photoFile)
 
 		photoResized := resize.Resize(0, 220, photoJpeg, resize.Bilinear)
 
-		render.Data(200, photoFile)
+		response.Header().Set("Content-Type", "image/jpeg")
+		jpeg.Encode(response, photoResized, &jpeg.Options{100})
 	})
 
 	app.Run()
