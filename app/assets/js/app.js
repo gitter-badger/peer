@@ -1,14 +1,14 @@
-import React from 'react'
-import {AppBar, FloatingActionButton} from 'material-ui'
-
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
-
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
 var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
+
+import React from 'react'
+import {AppBar, FloatingActionButton} from 'material-ui'
+import GridPhoto from './GridPhoto.js'
 
 var API = {
     photos() {
@@ -18,8 +18,8 @@ var API = {
     },
 
     upload(file) {
-        var form = new FormData()
-        form.append('file', file)
+        var form = new FormData();
+        form.append('file', file);
 
         return fetch('/photos', {
             method: 'post',
@@ -29,8 +29,8 @@ var API = {
 
     deletePhoto(id) {
         return fetch('/photos/' + id, {
-                method: 'delete',
-            })
+            method: 'delete'
+        })
             .then(this._status)
             .then(this._json)
     },
@@ -54,7 +54,7 @@ class App extends React.Component {
 
         this.state = {
             photos: []
-        }
+        };
 
         this.inputFileChange = this.inputFileChange.bind(this);
     }
@@ -96,7 +96,6 @@ class App extends React.Component {
                     {this.state.photos.map(renderGridPhoto)}
                 </div>
                 <FloatingActionButton
-                    iconClassName="muidocs-icon-content-add"
                     style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                     <i className="material-icons" style={{color: 'white'}}>cloud_upload</i>
                 </FloatingActionButton>
