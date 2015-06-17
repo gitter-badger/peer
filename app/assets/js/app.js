@@ -79,9 +79,9 @@ class App extends React.Component {
                     title="Photos"
                     showMenuIconButton={false}/>
 
-                <div style={{margin: '24px 80px'}}>
+                <div style={{margin: '24px'}}>
                     <div>
-                        <input 
+                        <input
                             type="file"
                             onChange={this.inputFileChange}/>
                     </div>
