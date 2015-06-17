@@ -17,6 +17,16 @@ var API = {
             .then(this._json)
     },
 
+    upload(file) {
+        var form = new FormData()
+        form.append('file', file)
+
+        return fetch('/photos', {
+            method: 'post',
+            body: form
+        })
+    },
+
     _status(response) {
         if (response.status >= 200 && response.status < 300) {
             return response;
@@ -37,6 +47,8 @@ class App extends React.Component {
         this.state = {
             photos: []
         }
+
+        this.inputFileChange = this.inputFileChange.bind(this);
     }
 
     getChildContext() {
@@ -68,6 +80,11 @@ class App extends React.Component {
                     showMenuIconButton={false}/>
 
                 <div style={{margin: '24px 80px'}}>
+                    <div>
+                        <input 
+                            type="file"
+                            onChange={this.inputFileChange}/>
+                    </div>
                     {this.state.photos.map(renderGridPhoto)}
                 </div>
                 <FloatingActionButton
@@ -79,8 +96,8 @@ class App extends React.Component {
         )
     }
 
-    handleFileDrop(files) {
-        console.log(files);
+    inputFileChange(event) {
+        API.upload(event.target.files[0]);
     }
 }
 
