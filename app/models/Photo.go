@@ -19,5 +19,5 @@ type Photo struct {
 }
 
 type PhotoUpload struct {
-	File *multipart.FileHeader `form:"photo"`
+	File *multipart.FileHeader `form:"file"`
 }

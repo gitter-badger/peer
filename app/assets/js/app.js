@@ -4,6 +4,9 @@ import {AppBar, FloatingActionButton} from 'material-ui'
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
+
 var mui = require('material-ui');
 var ThemeManager = new mui.Styles.ThemeManager();
 
@@ -12,6 +15,16 @@ var API = {
         return fetch('/photos')
             .then(this._status)
             .then(this._json)
+    },
+
+    upload(file) {
+        var form = new FormData()
+        form.append('file', file)
+
+        return fetch('/photos', {
+            method: 'post',
+            body: form
+        })
     },
 
     _status(response) {
@@ -34,6 +47,8 @@ class App extends React.Component {
         this.state = {
             photos: []
         }
+
+        this.inputFileChange = this.inputFileChange.bind(this);
     }
 
     getChildContext() {
@@ -65,19 +80,24 @@ class App extends React.Component {
                     showMenuIconButton={false}/>
 
                 <div style={{margin: '24px 80px'}}>
+                    <div>
+                        <input 
+                            type="file"
+                            onChange={this.inputFileChange}/>
+                    </div>
                     {this.state.photos.map(renderGridPhoto)}
                 </div>
                 <FloatingActionButton
                     iconClassName="muidocs-icon-content-add"
-                    style={{position: 'absolute', bottom: '20px', right: '20px'}}>
+                    style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                     <i className="material-icons" style={{color: 'white'}}>cloud_upload</i>
                 </FloatingActionButton>
             </div>
         )
     }
 
-    handleFileDrop(files) {
-        console.log(files);
+    inputFileChange(event) {
+        API.upload(event.target.files[0]);
     }
 }
 

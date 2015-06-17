@@ -64,7 +64,7 @@ func main() {
 		db.NewRecord(photo)
 		db.Create(&photo)
 
-		render.Status(201)
+		render.JSON(201, photo)
 	})
 
 	app.Get("/photos/:id", func(params martini.Params, render render.Render) {
