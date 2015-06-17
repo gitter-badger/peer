@@ -89,7 +89,7 @@ class App extends React.Component {
                 </div>
                 <FloatingActionButton
                     iconClassName="muidocs-icon-content-add"
-                    style={{position: 'absolute', bottom: '20px', right: '20px'}}>
+                    style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                     <i className="material-icons" style={{color: 'white'}}>cloud_upload</i>
                 </FloatingActionButton>
             </div>
