@@ -15,6 +15,7 @@ import (
 )
 
 const PHOTOS_PATH string = "./photos/"
+const DATABASE string = "photopeer.db"
 
 var (
 	db gorm.DB
@@ -94,7 +95,7 @@ func main() {
 func initDB() {
 	var err error
 
-	db, err = gorm.Open("sqlite3", "./phototresor.db")
+	db, err = gorm.Open("sqlite3", DATABASE)
 
 	if err != nil {
 		panic(err)
