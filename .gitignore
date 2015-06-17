@@ -2,7 +2,7 @@
 /main
 /node_modules
 /photos
-/phototresor.db
+/photopeer.db
 /public/*.js
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
