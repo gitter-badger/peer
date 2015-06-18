@@ -1,4 +1,4 @@
-export default API = {
+var API = {
     photos() {
         return fetch('/photos')
             .then(this._status)
@@ -34,3 +34,5 @@ export default API = {
         return response.json()
     }
 };
+
+export default API;
