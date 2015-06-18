@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/PhotoTresor/peer/app/models"
+	"github.com/PhotoPeer/peer/app/models"
 	"github.com/jinzhu/gorm"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/gzip"
@@ -17,6 +17,7 @@ import (
 )
 
 const PHOTOS_PATH string = "./photos/"
+const DATABASE string = "photopeer.db"
 
 var (
 	db gorm.DB
@@ -66,7 +67,7 @@ func main() {
 		db.NewRecord(photo)
 		db.Create(&photo)
 
-		render.Status(201)
+		render.JSON(201, photo)
 	})
 
 	app.Get("/photos/:id", func(params martini.Params, render render.Render) {
@@ -97,13 +98,31 @@ func main() {
 		jpeg.Encode(response, photoResized, &jpeg.Options{100})
 	})
 
+	app.Delete("/photos/:id", func(params martini.Params, render render.Render) {
+		photo := models.Photo{}
+
+		db.First(&photo, params["id"])
+
+		if (photo.ID == 0) {
+			render.Status(404)
+		}
+
+		err := os.Remove(PHOTOS_PATH + photo.FileName)
+		if(err != nil) {
+			render.Error(500)
+		}
+
+		db.Delete(&photo)
+		render.Status(200)
+	})
+
 	app.Run()
 }
 
 func initDB() {
 	var err error
 
-	db, err = gorm.Open("sqlite3", "./phototresor.db")
+	db, err = gorm.Open("sqlite3", DATABASE)
 
 	if err != nil {
 		panic(err)
