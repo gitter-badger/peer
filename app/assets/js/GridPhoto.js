@@ -1,5 +1,8 @@
 import React from 'react'
 
+import API from './API.js'
+import PhotosActions from './photos/PhotosActions.js'
+
 export default
 class GridPhoto extends React.Component {
 
@@ -25,7 +28,7 @@ class GridPhoto extends React.Component {
     handlePhotoDelete() {
         API.deletePhoto(this.props.photo.id)
             .then((response) => {
-                console.log(response);
+                PhotosActions.deletePhoto(this.props.photo.id);
             })
     }
 }

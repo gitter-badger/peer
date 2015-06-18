@@ -8,6 +8,9 @@ var ThemeManager = new mui.Styles.ThemeManager();
 
 import React from 'react'
 import {AppBar, FloatingActionButton} from 'material-ui'
+
+import PhotosActions from './photos/PhotosActions.js'
+import PhotosStore from './photos/PhotosStore.js'
 import API from './API.js'
 import GridPhoto from './GridPhoto.js'
 
@@ -16,10 +19,9 @@ class App extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            photos: []
-        };
+        this.state = PhotosStore.getState();
 
+        this.onChange = this.onChange.bind(this);
         this.inputFileChange = this.inputFileChange.bind(this);
     }
 
@@ -30,18 +32,25 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        PhotosStore.listen(this.onChange);
         API.photos()
             .then((photos) => {
-                this.setState({
-                    photos: photos
-                })
+                PhotosActions.updatePhotos(photos);
             })
+    }
+
+    componentWillUnmount() {
+        PhotosStore.unlisten(this.onChange);
+    }
+
+    onChange(state) {
+        this.setState(state);
     }
 
     render() {
         var renderGridPhoto = function (photo, index) {
             return (
-                <GridPhoto photo={photo}/>
+                <GridPhoto key={'photo-' + photo.id} photo={photo}/>
             )
         };
 
