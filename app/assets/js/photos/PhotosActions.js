@@ -5,6 +5,10 @@ class PhotosActions {
         this.dispatch(photos);
     }
 
+    uploadedPhoto(photo) {
+        this.dispatch(photo);
+    }
+
     deletePhoto(id) {
         this.dispatch(id);
     }

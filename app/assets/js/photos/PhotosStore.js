@@ -8,12 +8,18 @@ class PhotosStore {
 
         this.bindListeners({
             handleUpdatePhotos: PhotosActions.UPDATE_PHOTOS,
+            handleUploadedPhoto: PhotosActions.UPLOADED_PHOTO,
             handleDeletePhoto: PhotosActions.DELETE_PHOTO
         });
     }
 
     handleUpdatePhotos(photos) {
         this.photos = photos;
+    }
+
+    handleUploadedPhoto(photo) {
+        console.log(photo);
+        this.photos.push(photo);
     }
 
     handleDeletePhoto(id) {

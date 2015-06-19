@@ -77,7 +77,10 @@ class App extends React.Component {
     }
 
     inputFileChange(event) {
-        API.upload(event.target.files[0]);
+        API.upload(event.target.files[0])
+            .then((response) => {
+                PhotosActions.uploadedPhoto(response);
+            });
     }
 }
 
