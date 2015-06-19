@@ -9,16 +9,20 @@ var API = {
         var form = new FormData();
         form.append('file', file);
 
-        return fetch('/photos', {
-            method: 'post',
-            body: form
-        })
+        return fetch('/photos',
+            {
+                method: 'post',
+                body: form
+            })
+            .then(this._status)
+            .then(this._json)
     },
 
     deletePhoto(id) {
-        return fetch('/photos/' + id, {
-            method: 'delete'
-        })
+        return fetch('/photos/' + id,
+            {
+                method: 'delete'
+            })
             .then(this._status)
             .then(this._json)
     },
