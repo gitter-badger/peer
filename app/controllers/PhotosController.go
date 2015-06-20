@@ -8,7 +8,11 @@ import (
 	"io"
 	"github.com/PhotoPeer/peer/env"
 	"github.com/go-martini/martini"
-	"io/ioutil"
+	"image/jpeg"
+	"net/http"
+	"github.com/nfnt/resize"
+	"github.com/PhotoPeer/peer/app"
+	"image"
 )
 
 
