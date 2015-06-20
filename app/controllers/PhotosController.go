@@ -60,17 +60,27 @@ func GetPhoto(params martini.Params, render render.Render, DB gorm.DB) {
 	render.JSON(200, photo)
 }
 
-func DownloadPhoto(params martini.Params, render render.Render, DB gorm.DB) {
+const height = 220
+func PhotoThumbnail(params martini.Params, response http.ResponseWriter, DB gorm.DB) {
 	photo := models.Photo{}
 
 	DB.First(&photo, params["id"])
 
-	photoData, err := ioutil.ReadFile(env.PHOTOS_PATH + photo.FileName)
-	if err != nil {
-		render.Error(500)
+	var thumbnail image.Image
+	thumbnail = app.GetThumbnail(photo, height)
+	if(thumbnail == nil) {
+		photoFile, _ := os.Open(env.PHOTOS_PATH + photo.FileName)
+		defer photoFile.Close()
+
+		photoJpeg, _ := jpeg.Decode(photoFile)
+
+		thumbnail = resize.Resize(0, height, photoJpeg, resize.Bilinear)
+		app.PutThumbnail(photo, height, thumbnail)
 	}
 
-	render.Data(200, photoData)
+	response.Header().Set("Content-Type", "image/jpeg")
+	jpeg.Encode(response, thumbnail, &jpeg.Options{95})
+
 }
 
 func DeletePhoto(params martini.Params, render render.Render, DB gorm.DB) {

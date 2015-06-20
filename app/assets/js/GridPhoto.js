@@ -13,7 +13,7 @@ class GridPhoto extends React.Component {
     }
 
     render() {
-        var downloadPath = "/photos/" + this.props.photo.id + "/download";
+        var downloadPath = "/photos/" + this.props.photo.id + "/thumbnail";
         return (
             <div key={this.props.photo.id}
                  style={{display: 'inline-block', marginRight: '10px', position: 'relative'}}>

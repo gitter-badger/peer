@@ -23,7 +23,7 @@ func main() {
 	app.Get("/photos", controllers.ListPhotos)
 	app.Post("/photos", binding.MultipartForm(models.PhotoUpload{}), controllers.CreatePhoto)
 	app.Get("/photos/:id", controllers.GetPhoto)
-	app.Get("/photos/:id/download", controllers.DownloadPhoto)
+	app.Get("/photos/:id/thumbnail", controllers.PhotoThumbnail)
 	app.Delete("/photos/:id", controllers.DeletePhoto)
 
 	app.Run()
