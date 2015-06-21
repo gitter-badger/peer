@@ -1,18 +1,16 @@
 package controllers
 import (
-	"github.com/PhotoPeer/peer/app/models"
+	"github.com/go-martini/martini"
 	"github.com/jinzhu/gorm"
 	"github.com/martini-contrib/render"
-	"log"
-	"os"
-	"io"
+	"github.com/PhotoPeer/peer/app/models"
 	"github.com/PhotoPeer/peer/env"
-	"github.com/go-martini/martini"
+	"github.com/PhotoPeer/peer/app/models/Thumbnail"
 	"image/jpeg"
+	"io"
+	"log"
 	"net/http"
-	"github.com/nfnt/resize"
-	"github.com/PhotoPeer/peer/app"
-	"image"
+	"os"
 )
 
 
@@ -70,21 +68,10 @@ func PhotoThumbnail(params martini.Params, response http.ResponseWriter, DB gorm
 
 	DB.First(&photo, params["id"])
 
-	var thumbnail image.Image
-	thumbnail = app.GetThumbnail(photo, height)
-	if(thumbnail == nil) {
-		photoFile, _ := os.Open(env.PHOTOS_PATH + photo.FileName)
-		defer photoFile.Close()
-
-		photoJpeg, _ := jpeg.Decode(photoFile)
-
-		thumbnail = resize.Resize(0, height, photoJpeg, resize.Bilinear)
-		app.PutThumbnail(photo, height, thumbnail)
-	}
+	thumbnail := Thumbnail.New(photo, height)
 
 	response.Header().Set("Content-Type", "image/jpeg")
-	jpeg.Encode(response, thumbnail, &jpeg.Options{95})
-
+	jpeg.Encode(response, thumbnail.Image, &jpeg.Options{95})
 }
 
 func DeletePhoto(params martini.Params, render render.Render, DB gorm.DB) {
