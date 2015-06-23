@@ -59,14 +59,24 @@ func GetPhoto(params martini.Params, render render.Render, DB gorm.DB) {
 
 	DB.First(&photo, params["id"])
 
+	if(photo == models.Photo{}) {
+		render.Error(404)
+		return
+	}
+
 	render.JSON(200, photo)
 }
 
 const height = 220
-func PhotoThumbnail(params martini.Params, response http.ResponseWriter, DB gorm.DB) {
+func PhotoThumbnail(params martini.Params, render render.Render, DB gorm.DB, response http.ResponseWriter) {
 	photo := models.Photo{}
 
 	DB.First(&photo, params["id"])
+
+	if(photo == models.Photo{}) {
+		render.Error(404)
+		return
+	}
 
 	thumbnail := Thumbnail.New(photo, height)
 
@@ -80,12 +90,14 @@ func DeletePhoto(params martini.Params, render render.Render, DB gorm.DB) {
 	DB.First(&photo, params["id"])
 
 	if (photo.ID == 0) {
-		render.Status(404)
+		render.Error(404)
+		return
 	}
 
 	err := os.Remove(env.PHOTOS_PATH + photo.FileName)
 	if (err != nil) {
 		render.Error(500)
+		return
 	}
 
 	DB.Delete(&photo)
