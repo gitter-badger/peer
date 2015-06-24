@@ -21,3 +21,7 @@ type Photo struct {
 type PhotoUpload struct {
 	File *multipart.FileHeader `form:"file"`
 }
+
+func (photo *Photo) Empty() bool {
+	return *photo == Photo{}
+}
