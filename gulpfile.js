@@ -5,6 +5,7 @@ var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var babelify = require("babelify");
 var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('default', [
     'js',
@@ -34,5 +35,9 @@ gulp.task('js', function () {
 gulp.task('css', function () {
     gulp.src('assets/css/**/*.scss')
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(gulp.dest('public'));
 });
