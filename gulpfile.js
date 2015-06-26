@@ -10,12 +10,12 @@ gulp.task('default', [
 ]);
 
 gulp.task('watch', ['default'], function () {
-    return gulp.watch('app/assets/js/**', ['js']);
+    return gulp.watch('assets/js/**', ['js']);
 });
 
 gulp.task('js', function () {
     var b = browserify({
-        entries: 'app/assets/js/app.js',
+        entries: 'assets/js/app.js',
         debug: true
     });
 
