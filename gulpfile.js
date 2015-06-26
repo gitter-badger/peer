@@ -4,13 +4,16 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var babelify = require("babelify");
+var sass = require('gulp-sass');
 
 gulp.task('default', [
-    'js'
+    'js',
+    'css'
 ]);
 
 gulp.task('watch', ['default'], function () {
-    return gulp.watch('assets/js/**', ['js']);
+    gulp.watch('assets/js/**/*.js', ['js']);
+    gulp.watch('assets/css/**/*.scss', ['css']);
 });
 
 gulp.task('js', function () {
@@ -26,4 +29,10 @@ gulp.task('js', function () {
         .pipe(buffer())
         .on('error', gutil.log)
         .pipe(gulp.dest('./public/'));
+});
+
+gulp.task('css', function () {
+    gulp.src('assets/css/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('public'));
 });
