@@ -16,11 +16,13 @@ class GridPhoto extends React.Component {
         var downloadPath = "/photos/" + this.props.photo.id + "/thumbnail";
         return (
             <div className="grid-photo" key={this.props.photo.id}>
-                <div className="grid-photo-actions">
-                    <i className="material-icons"
-                       onTouchTap={this.handlePhotoDelete}>delete</i>
-                </div>
                 <img src={downloadPath} alt={this.props.photo.file_name} height="220"/>
+                <div className="overlay">
+                    <div className="actions">
+                        <i className="material-icons"
+                           onTouchTap={this.handlePhotoDelete}>delete</i>
+                    </div>
+                </div>
             </div>
         )
     }
